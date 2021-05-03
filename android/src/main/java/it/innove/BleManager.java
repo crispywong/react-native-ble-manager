@@ -132,8 +132,8 @@ class BleManager extends ReactContextBaseJavaModule implements ActivityEventList
 		filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
 		context.registerReceiver(mReceiver, filter);
 		IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_PAIRING_REQUEST);
-        intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
-        context.registerReceiver(mReceiver, intentFilter);
+					intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+		context.registerReceiver(mReceiver, intentFilter);
 		callback.invoke();
 		Log.d(LOG_TAG, "BleManager initialized");
 	}
@@ -161,12 +161,12 @@ class BleManager extends ReactContextBaseJavaModule implements ActivityEventList
 			Callback callback) {
 		Log.d(LOG_TAG, "scan");
 		if (getBluetoothAdapter() == null) {
-			Log.d(LOG_TAG, "No bluetooth support");
-			callback.invoke("No bluetooth support");
-			return;
+				Log.d(LOG_TAG, "No bluetooth support");
+				callback.invoke("No bluetooth support");
+				return;
 		}
 		if (!getBluetoothAdapter().isEnabled()) {
-			return;
+				return;
 		}
 
 		synchronized (peripherals) {
@@ -239,15 +239,15 @@ class BleManager extends ReactContextBaseJavaModule implements ActivityEventList
 			callback.invoke("Invalid peripheral uuid");
 			return;
 		} else {
-			try {
-				Method m = peripheral.getDevice().getClass().getMethod("removeBond", (Class[]) null);
-				m.invoke(peripheral.getDevice(), (Object[]) null);
-				removeBondRequest = new BondRequest(peripheralUUID, callback);
-				return;
-			} catch (Exception e) {
-				Log.d(LOG_TAG, "Error in remove bond: " + peripheralUUID, e);
-				callback.invoke("Remove bond request fail");
-			}
+				try {
+					Method m = peripheral.getDevice().getClass().getMethod("removeBond", (Class[]) null);
+					m.invoke(peripheral.getDevice(), (Object[]) null);
+					removeBondRequest = new BondRequest(peripheralUUID, callback);
+					return;
+				} catch (Exception e) {
+					Log.d(LOG_TAG, "Error in remove bond: " + peripheralUUID, e);
+					callback.invoke("Remove bond request fail");
+				}
 		}
 
 	}
@@ -346,7 +346,7 @@ class BleManager extends ReactContextBaseJavaModule implements ActivityEventList
 	@ReactMethod
 	public void writeWithoutResponse(String deviceUUID, String serviceUUID, String characteristicUUID,
 			ReadableArray message, Integer maxByteSize, Integer queueSleepTime, Callback callback) {
-		Log.d(LOG_TAG, "Write without response to: " + deviceUUID);
+		Log.d(LOG_TAG, "Write without response to: " + deviceUUID + " size: " + String.valueOf(maxByteSize));
 		if (serviceUUID == null || characteristicUUID == null) {
 			callback.invoke("ServiceUUID and characteristicUUID required.");
 			return;
@@ -666,9 +666,9 @@ class BleManager extends ReactContextBaseJavaModule implements ActivityEventList
 	public static String bytesToHex(byte[] bytes) {
 		char[] hexChars = new char[bytes.length * 2];
 		for (int j = 0; j < bytes.length; j++) {
-			int v = bytes[j] & 0xFF;
+			int v = bytes[j] & 0xff;
 			hexChars[j * 2] = hexArray[v >>> 4];
-			hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+			hexChars[j * 2 + 1] = hexArray[v & 0x0f];
 		}
 		return new String(hexChars);
 	}
